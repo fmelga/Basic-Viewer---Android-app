@@ -34,4 +34,6 @@ and Run.
 
 ## License
 
+Released under the [MIT License](LICENSE).
+
 Bundled font: Poppins (SIL Open Font License).
