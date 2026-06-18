@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Page with a dog-eared top-right corner -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M38,24 H62 L75,37 V79 a5,5 0 0 1 -5,5 H38 a5,5 0 0 1 -5,-5 V29 a5,5 0 0 1 5,-5 Z" />
+    <!-- folded corner flap -->
+    <path
+        android:fillColor="#C7CDFF"
+        android:pathData="M62,24 L75,37 L62,37 Z" />
+
+    <!-- text lines -->
+    <path android:strokeColor="#9AA4E8" android:strokeWidth="4.4"
+        android:strokeLineCap="round" android:pathData="M41,46 H66" />
+    <path android:strokeColor="#9AA4E8" android:strokeWidth="4.4"
+        android:strokeLineCap="round" android:pathData="M41,54 H66" />
+    <path android:strokeColor="#9AA4E8" android:strokeWidth="4.4"
+        android:strokeLineCap="round" android:pathData="M41,62 H60" />
+
+    <!-- magnifier lens -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeColor="#FFC24B"
+        android:strokeWidth="4.6"
+        android:pathData="M56.5,67 a7.5,7.5 0 1 1 15,0 a7.5,7.5 0 1 1 -15,0 Z" />
+    <!-- magnifier handle -->
+    <path android:strokeColor="#FFC24B" android:strokeWidth="5"
+        android:strokeLineCap="round" android:pathData="M69.3,72.3 L75,78" />
+</vector>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_open"
+        android:icon="@drawable/ic_open"
+        android:title="@string/action_open"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_toggle_theme"
+        android:icon="@drawable/ic_theme_toggle"
+        android:title="@string/action_toggle_theme"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_browse"
+        android:title="@string/action_browse"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_rename"
+        android:title="@string/action_rename"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_share"
+        android:title="@string/action_share"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_new"
+        android:title="@string/action_new"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_manage_signature"
+        android:title="@string/action_manage_signature"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_discard"
+        android:title="@string/action_discard"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_recent"
+        android:title="@string/action_recent"
+        app:showAsAction="never">
+        <menu>
+            <item android:id="@+id/recent_0" android:title="" />
+            <item android:id="@+id/recent_1" android:title="" />
+            <item android:id="@+id/recent_2" android:title="" />
+            <item android:id="@+id/recent_3" android:title="" />
+            <item android:id="@+id/recent_4" android:title="" />
+        </menu>
+    </item>
+
+</menu>

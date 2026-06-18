@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:title="@string/app_name"
+            app:titleTextAppearance="@style/TextAppearance.App.ToolbarTitle"
+            app:titleTextColor="?attr/colorOnPrimary" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <!-- Dashboard: recent files (shown when no document is open) -->
+            <LinearLayout
+                android:id="@+id/dashboard"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/recent_files_header"
+                    android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                    android:textColor="?attr/colorPrimary" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnBrowse"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/action_browse"
+                    app:icon="@drawable/ic_open" />
+
+                <TextView
+                    android:id="@+id/recentEmpty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:gravity="center"
+                    android:text="@string/empty_hint"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:visibility="gone" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recentRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:clipToPadding="false" />
+
+            </LinearLayout>
+
+            <!-- Rendered preview -->
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/markdownView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:lineSpacingMultiplier="1.2"
+                    android:textIsSelectable="true"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:text="@string/empty_hint" />
+
+            </androidx.core.widget.NestedScrollView>
+
+            <!-- Raw editor -->
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/editScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/md_editor_bg"
+                android:fillViewport="true"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/markdownEditor"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:gravity="top|start"
+                    android:padding="16dp"
+                    android:fontFamily="monospace"
+                    android:textSize="14sp"
+                    android:inputType="textMultiLine|textNoSuggestions|textCapSentences"
+                    android:hint="@string/editor_hint"
+                    android:importantForAutofill="no"
+                    tools:ignore="LabelFor" />
+
+            </androidx.core.widget.NestedScrollView>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="20dp"
+        android:contentDescription="@string/action_edit"
+        android:src="@drawable/ic_edit"
+        app:tint="?attr/colorOnPrimaryContainer" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

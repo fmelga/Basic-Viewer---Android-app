@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Brand palette (light) -->
+    <color name="md_primary">#4C5FD5</color>
+    <color name="md_on_primary">#FFFFFFFF</color>
+    <color name="md_primary_container">#DEE1FF</color>
+    <color name="md_on_primary_container">#001257</color>
+    <color name="md_secondary">#5A5D72</color>
+    <color name="md_surface">#FBF8FF</color>
+    <color name="md_on_surface">#1A1B22</color>
+    <color name="md_editor_bg">#F2F3FB</color>
+</resources>

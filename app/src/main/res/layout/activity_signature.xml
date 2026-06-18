@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:title="@string/signature_title"
+        app:titleTextAppearance="@style/TextAppearance.App.ToolbarTitle"
+        app:titleTextColor="?attr/colorOnPrimary"
+        app:navigationIconTint="?attr/colorOnPrimary" />
+
+    <!-- Current saved signature (only visible when one exists) -->
+    <LinearLayout
+        android:id="@+id/currentSignatureGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/signature_current"
+            android:textAppearance="?attr/textAppearanceTitleSmall" />
+
+        <ImageView
+            android:id="@+id/currentSignaturePreview"
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:layout_marginTop="8dp"
+            android:adjustViewBounds="true"
+            android:background="@color/md_editor_bg"
+            android:contentDescription="@string/signature_current"
+            android:padding="8dp"
+            android:scaleType="fitCenter" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDeleteSignature"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/action_delete_signature"
+            app:icon="@android:drawable/ic_menu_delete" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="8dp"
+        android:text="@string/signature_hint"
+        android:textAppearance="?attr/textAppearanceBodyMedium" />
+
+    <com.example.mdviewer.SignaturePadView
+        android:id="@+id/signaturePad"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="16dp"
+        android:background="@color/md_editor_bg" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="16dp"
+        android:background="?attr/colorOutline" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="end">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnClear"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_clear" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSaveSignature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/action_save" />
+
+    </LinearLayout>
+
+</LinearLayout>

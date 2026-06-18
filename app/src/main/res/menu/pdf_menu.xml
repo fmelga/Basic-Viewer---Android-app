@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_share"
+        android:title="@string/action_share"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_rename"
+        android:title="@string/action_rename"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_change_signature"
+        android:title="@string/action_change_signature"
+        app:showAsAction="never" />
+
+</menu>

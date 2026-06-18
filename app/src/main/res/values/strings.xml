@@ -1,0 +1,66 @@
+<resources>
+    <string name="app_name">Basic Viewer</string>
+    <string name="action_open">Open</string>
+    <string name="empty_hint">Tap Open to view a markdown file.</string>
+    <string name="error_open">Couldn\'t open this file.</string>
+    <string name="action_toggle_theme">Toggle theme</string>
+    <string name="action_recent">Recent files</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_save">Save</string>
+    <string name="action_discard">Discard changes</string>
+    <string name="action_new">New file</string>
+    <string name="editor_hint"># Start writing Markdown…</string>
+    <string name="empty_hint_actionable">Tap Open to view a file, or the pencil to create a new one.</string>
+    <string name="saved">Saved</string>
+    <string name="error_save">Couldn\'t save. Try \"Save as…\"</string>
+    <string name="save_as_title">Save Markdown as…</string>
+    <string name="untitled">untitled.md</string>
+    <string name="discard_title">Discard changes?</string>
+    <string name="discard_message">Your unsaved edits will be lost.</string>
+    <string name="keep_editing">Keep editing</string>
+
+    <!-- PDF viewing & signing -->
+    <string name="pdf_page">PDF page</string>
+    <string name="action_sign">Sign</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_clear">Clear</string>
+    <string name="action_apply_signature">Place</string>
+    <string name="action_create_signature">Create signature</string>
+    <string name="pdf_signed">Signed PDF saved</string>
+    <string name="sign_place_on_page">Drag the signature onto a page first.</string>
+    <string name="no_signature_title">No signature yet</string>
+    <string name="no_signature_message">Draw a signature to reuse on your PDFs.</string>
+    <string name="signature_title">Your signature</string>
+    <string name="signature_hint">Draw your signature below. It will be saved for reuse.</string>
+    <string name="signature_empty">Draw a signature first.</string>
+    <string name="signature_current">Current signature</string>
+    <string name="action_delete_signature">Delete signature</string>
+    <string name="delete_signature_title">Delete signature?</string>
+    <string name="delete_signature_message">You\'ll need to draw a new one next time.</string>
+    <string name="signature_deleted">Signature deleted</string>
+    <string name="action_manage_signature">Manage signature</string>
+    <string name="action_change_signature">Change signature</string>
+
+    <!-- Dashboard & sharing -->
+    <string name="recent_files_header">Recent files</string>
+    <string name="action_remove_recent">Remove from recent</string>
+    <string name="action_share">Share</string>
+    <string name="share_chooser">Share via</string>
+    <string name="nothing_to_share">Open or save a document first.</string>
+    <string name="signature_size">Size</string>
+    <string name="share_which_title">Share which version?</string>
+    <string name="share_signed">Signed copy</string>
+    <string name="share_original">Original</string>
+    <string name="new_file_title">New file type</string>
+    <string name="action_rename">Rename</string>
+    <string name="rename_title">Rename file</string>
+    <string name="renamed">Renamed</string>
+    <string name="error_rename">Couldn\'t rename this file.</string>
+    <string name="action_browse">Browse a folder</string>
+    <string name="browse_title">Files in folder</string>
+    <string name="browse_choose">Choose folder</string>
+    <string name="browse_empty">No supported files in this folder.</string>
+    <string name="browse_scanning">Scanning…</string>
+    <string name="browse_hint">Pick a folder to list its Markdown, PDF, text and code files.</string>
+    <string name="folder_label">Folder</string>
+</resources>
