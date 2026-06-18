@@ -171,6 +171,11 @@ class PdfActivity : AppCompatActivity() {
     }
 
     private fun renameTo(uri: Uri, newName: String) {
+        // External PDFs are copies in private storage (FileProvider) — rename the file itself.
+        if (uri.authority == "$packageName.fileprovider") {
+            renameLocalCopy(uri, newName)
+            return
+        }
         val newUri = try {
             android.provider.DocumentsContract.renameDocument(contentResolver, uri, newName)
         } catch (e: Exception) {
@@ -181,6 +186,49 @@ class PdfActivity : AppCompatActivity() {
         sourceName = newName
         supportActionBar?.title = newName
         Toast.makeText(this, R.string.renamed, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun renameLocalCopy(uri: Uri, newName: String) {
+        val recentsDir = File(filesDir, "recents")
+        val rel = uri.pathSegments.drop(1).joinToString("/")
+        val oldFile = File(recentsDir, rel)
+        val safe = newName.replace(Regex("[^A-Za-z0-9._-]"), "_").trim('_').ifBlank { "file" }
+        val newFile = File(recentsDir, safe)
+        if (oldFile.absolutePath != newFile.absolutePath) {
+            if (!oldFile.exists()) {
+                Toast.makeText(this, R.string.error_rename, Toast.LENGTH_LONG).show()
+                return
+            }
+            if (newFile.exists()) newFile.delete()
+            if (!oldFile.renameTo(newFile)) {
+                Toast.makeText(this, R.string.error_rename, Toast.LENGTH_LONG).show()
+                return
+            }
+        }
+        val newUri = androidx.core.content.FileProvider.getUriForFile(
+            this, "$packageName.fileprovider", newFile
+        )
+        updateRecentsEntry(uri, newUri, newName)
+        sourceUri = newUri
+        sourceName = newName
+        supportActionBar?.title = newName
+        Toast.makeText(this, R.string.renamed, Toast.LENGTH_SHORT).show()
+    }
+
+    /** Keeps the shared recents list (owned by MainActivity) in sync after a copy is renamed. */
+    private fun updateRecentsEntry(oldUri: Uri, newUri: Uri, newName: String) {
+        val prefs = getSharedPreferences("mdviewer_prefs", MODE_PRIVATE)
+        val uris = prefs.getString("recent_uris", "")!!.split("\n").filter { it.isNotBlank() }.toMutableList()
+        val names = prefs.getString("recent_names", "")!!.split("\n").filter { it.isNotBlank() }.toMutableList()
+        val i = uris.indexOf(oldUri.toString())
+        if (i >= 0 && i < names.size) {
+            uris[i] = newUri.toString()
+            names[i] = newName
+            prefs.edit()
+                .putString("recent_uris", uris.joinToString("\n"))
+                .putString("recent_names", names.joinToString("\n"))
+                .apply()
+        }
     }
 
     private fun sharePdf() {

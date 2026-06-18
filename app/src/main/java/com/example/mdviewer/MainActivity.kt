@@ -623,6 +623,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun renameTo(uri: Uri, newName: String) {
+        // Files we copied into private storage aren't SAF documents, so rename the file itself.
+        if (uri.authority == fileProviderAuthority) {
+            renameLocalCopy(uri, newName)
+            return
+        }
+
         val newUri = try {
             DocumentsContract.renameDocument(contentResolver, uri, newName)
         } catch (e: Exception) {
@@ -641,12 +647,36 @@ class MainActivity : AppCompatActivity() {
             } catch (_: SecurityException) { }
             removeRecent(uri)
         }
+        applyRename(effectiveUri, newName)
+    }
 
-        currentUri = effectiveUri
+    private fun renameLocalCopy(uri: Uri, newName: String) {
+        val rel = uri.pathSegments.drop(1).joinToString("/")
+        val oldFile = File(recentsDir, rel)
+        val newFile = File(recentsDir, sanitizeFileName(newName))
+        if (oldFile.absolutePath == newFile.absolutePath) {
+            applyRename(uri, newName)
+            return
+        }
+        if (!oldFile.exists()) {
+            Toast.makeText(this, R.string.error_rename, Toast.LENGTH_LONG).show()
+            return
+        }
+        if (newFile.exists()) newFile.delete()
+        if (!oldFile.renameTo(newFile)) {
+            Toast.makeText(this, R.string.error_rename, Toast.LENGTH_LONG).show()
+            return
+        }
+        removeRecent(uri) // old file already moved, so its deleteLocalCopy is a no-op
+        applyRename(FileProvider.getUriForFile(this, fileProviderAuthority, newFile), newName)
+    }
+
+    private fun applyRename(newUri: Uri, newName: String) {
+        currentUri = newUri
         currentName = newName
-        currentIsMarkdown = isMarkdownDoc(effectiveUri, newName)
+        currentIsMarkdown = isMarkdownDoc(newUri, newName)
         supportActionBar?.title = newName
-        addToRecents(effectiveUri, newName)
+        addToRecents(newUri, newName)
         if (!isEditing) renderPreview(currentText, newName, currentIsMarkdown)
         currentMenu?.let { refreshRecentMenu(it); refreshShareMenu(it) }
         Toast.makeText(this, R.string.renamed, Toast.LENGTH_SHORT).show()
