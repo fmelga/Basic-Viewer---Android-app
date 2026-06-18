@@ -63,4 +63,6 @@
     <string name="browse_scanning">Scanning…</string>
     <string name="browse_hint">Pick a folder to list its Markdown, PDF, text and code files.</string>
     <string name="folder_label">Folder</string>
+    <string name="action_copy_all">Copy all text</string>
+    <string name="copied_all">Content copied to clipboard</string>
 </resources>

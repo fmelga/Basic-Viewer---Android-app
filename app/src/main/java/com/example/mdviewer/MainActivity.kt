@@ -223,16 +223,16 @@ class MainActivity : AppCompatActivity() {
                 shareCurrent()
                 true
             }
+            R.id.action_copy_all -> {
+                copyAllContent()
+                true
+            }
             R.id.action_rename -> {
                 showRenameDialog()
                 true
             }
             R.id.action_browse -> {
                 browseFiles.launch(Intent(this, BrowseActivity::class.java))
-                true
-            }
-            R.id.action_manage_signature -> {
-                startActivity(Intent(this, SignatureActivity::class.java))
                 true
             }
             R.id.action_discard -> {
@@ -488,6 +488,9 @@ class MainActivity : AppCompatActivity() {
      * storage and served via FileProvider, so recents keep working after the source app closes.
      */
     private fun durableUriFor(uri: Uri, name: String): Uri {
+        // Already one of our internal copies — reuse it. Re-copying would open the same
+        // file for read and write at once, truncating it to empty.
+        if (uri.authority == fileProviderAuthority) return uri
         if (uri.scheme == "content" && uri.authority != fileProviderAuthority) {
             val alreadyPersisted = contentResolver.persistedUriPermissions
                 .any { it.uri == uri && it.isReadPermission }
@@ -596,6 +599,16 @@ class MainActivity : AppCompatActivity() {
         val hasDoc = currentUri != null
         menu.findItem(R.id.action_share)?.isVisible = hasDoc
         menu.findItem(R.id.action_rename)?.isVisible = hasDoc
+        // Copy is for text/markdown content (the preview), not the binary PDF flow.
+        menu.findItem(R.id.action_copy_all)?.isVisible = hasDoc
+    }
+
+    private fun copyAllContent() {
+        val content = if (isEditing) markdownEditor.text.toString() else currentText
+        if (content.isEmpty()) return
+        val clipboard = getSystemService(CLIPBOARD_SERVICE) as android.content.ClipboardManager
+        clipboard.setPrimaryClip(android.content.ClipData.newPlainText(currentName, content))
+        Toast.makeText(this, R.string.copied_all, Toast.LENGTH_SHORT).show()
     }
 
     // ── Rename ────────────────────────────────────────────────────────────────
