@@ -223,16 +223,16 @@ class MainActivity : AppCompatActivity() {
                 shareCurrent()
                 true
             }
+            R.id.action_copy_all -> {
+                copyAllContent()
+                true
+            }
             R.id.action_rename -> {
                 showRenameDialog()
                 true
             }
             R.id.action_browse -> {
                 browseFiles.launch(Intent(this, BrowseActivity::class.java))
-                true
-            }
-            R.id.action_manage_signature -> {
-                startActivity(Intent(this, SignatureActivity::class.java))
                 true
             }
             R.id.action_discard -> {
@@ -488,6 +488,9 @@ class MainActivity : AppCompatActivity() {
      * storage and served via FileProvider, so recents keep working after the source app closes.
      */
     private fun durableUriFor(uri: Uri, name: String): Uri {
+        // Already one of our internal copies — reuse it. Re-copying would open the same
+        // file for read and write at once, truncating it to empty.
+        if (uri.authority == fileProviderAuthority) return uri
         if (uri.scheme == "content" && uri.authority != fileProviderAuthority) {
             val alreadyPersisted = contentResolver.persistedUriPermissions
                 .any { it.uri == uri && it.isReadPermission }
@@ -596,6 +599,16 @@ class MainActivity : AppCompatActivity() {
         val hasDoc = currentUri != null
         menu.findItem(R.id.action_share)?.isVisible = hasDoc
         menu.findItem(R.id.action_rename)?.isVisible = hasDoc
+        // Copy is for text/markdown content (the preview), not the binary PDF flow.
+        menu.findItem(R.id.action_copy_all)?.isVisible = hasDoc
+    }
+
+    private fun copyAllContent() {
+        val content = if (isEditing) markdownEditor.text.toString() else currentText
+        if (content.isEmpty()) return
+        val clipboard = getSystemService(CLIPBOARD_SERVICE) as android.content.ClipboardManager
+        clipboard.setPrimaryClip(android.content.ClipData.newPlainText(currentName, content))
+        Toast.makeText(this, R.string.copied_all, Toast.LENGTH_SHORT).show()
     }
 
     // ── Rename ────────────────────────────────────────────────────────────────
@@ -623,6 +636,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun renameTo(uri: Uri, newName: String) {
+        // Files we copied into private storage aren't SAF documents, so rename the file itself.
+        if (uri.authority == fileProviderAuthority) {
+            renameLocalCopy(uri, newName)
+            return
+        }
+
         val newUri = try {
             DocumentsContract.renameDocument(contentResolver, uri, newName)
         } catch (e: Exception) {
@@ -641,12 +660,36 @@ class MainActivity : AppCompatActivity() {
             } catch (_: SecurityException) { }
             removeRecent(uri)
         }
+        applyRename(effectiveUri, newName)
+    }
 
-        currentUri = effectiveUri
+    private fun renameLocalCopy(uri: Uri, newName: String) {
+        val rel = uri.pathSegments.drop(1).joinToString("/")
+        val oldFile = File(recentsDir, rel)
+        val newFile = File(recentsDir, sanitizeFileName(newName))
+        if (oldFile.absolutePath == newFile.absolutePath) {
+            applyRename(uri, newName)
+            return
+        }
+        if (!oldFile.exists()) {
+            Toast.makeText(this, R.string.error_rename, Toast.LENGTH_LONG).show()
+            return
+        }
+        if (newFile.exists()) newFile.delete()
+        if (!oldFile.renameTo(newFile)) {
+            Toast.makeText(this, R.string.error_rename, Toast.LENGTH_LONG).show()
+            return
+        }
+        removeRecent(uri) // old file already moved, so its deleteLocalCopy is a no-op
+        applyRename(FileProvider.getUriForFile(this, fileProviderAuthority, newFile), newName)
+    }
+
+    private fun applyRename(newUri: Uri, newName: String) {
+        currentUri = newUri
         currentName = newName
-        currentIsMarkdown = isMarkdownDoc(effectiveUri, newName)
+        currentIsMarkdown = isMarkdownDoc(newUri, newName)
         supportActionBar?.title = newName
-        addToRecents(effectiveUri, newName)
+        addToRecents(newUri, newName)
         if (!isEditing) renderPreview(currentText, newName, currentIsMarkdown)
         currentMenu?.let { refreshRecentMenu(it); refreshShareMenu(it) }
         Toast.makeText(this, R.string.renamed, Toast.LENGTH_SHORT).show()
